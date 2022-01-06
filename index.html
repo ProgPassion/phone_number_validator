@@ -8,94 +8,80 @@
 <body>
 	<input type="text" id="field1">
 	<button id="submit">check</button>
+	<p>Is phone number valid: <span id="output"></span></p>
 
 	<script type="text/javascript">
-		
+	
 		let inputField = document.getElementById("field1"); 
 		let submitBtn  = document.getElementById("submit");
-		let validChars = ["0","1","2","3","4","5","6","7","8","9"," ","-","(",")"];
-
+		
 		submitBtn.addEventListener("click", function() {
-			console.log(checkForInvalidChars(inputField.value, validChars));			
+			document.getElementById("output").innerHTML = checkPhoneNumberPattern(inputField.value.split("")) ? "Valid" : "Invalid";			
 		});
+		
+		function checkPhoneNumberPattern(inputValue) {
 
-		function checkForInvalidChars(inputField, validChars) {
-			let validInput = true;
+			function checkIfAllNumbers(stringCharacters) {
 
-			inputField.split("").forEach(function(character) {
-				if(!validChars.includes(character))
-					validInput = false;
-			});
-
-			return validInput;
-		}
-
-		function checkForRightSpacePattern(inputField) {
-
-			let rightPattern = true;
-
-			if(inputField[0] == " " || inputField[inputField.length - 1] == " ") //the input starts with space or ends with space
-				rightPattern = false;
-
-			for(let i = 0; i < inputField.length - 1; i++) {
-				if(inputField[i] == " " && inputField[i+1] == " ") //two space chars are found one after another
-					rightPattern = false;
-			}
-
-			return rightPattern;
-		}
-
-		function checkForRightParenthesesPattern(inputField) {
-
-			let rightPattern = true;
-
-			if(inputField[0] == "(") {
-
-				let closingParenthesesFound = false; //declare a variable false for the closing parentheses and make it true when is found one
-
-				for(let i = 1; i < inputField.length; i++) {
-					if(inputField[i] == "(") // if there is found other opening parentheses then turn the rightPattern variable to false
-						rightPattern = false;
-
-					if(inputField[i] == ")") { 
-						closingParenthesesFound = true; // when found the closing parentheses turn the closingParenthesesFound to true
-						if(i != 4) // if the index of the closing parentheses is not 4 then the rightPattern variable should be turned to false
-							rightPattern = false;	
-					}
-						 
+				for(let i = 0; i < stringCharacters.length; i++) {
+					if(isNaN(parseInt(stringCharacters[i])))
+						return false;
 				}
-
-				if(closingParenthesesFound && rightPattern) // check if in the pattern is found a closing parentheses and if rightPattern variable is true
-					return rightPattern;
+				return true;
 			}
 
-			return rightPattern;
-		}
+			function checkLastFourDigitsPatter() {
 
-
-		function checkForRightDashPattern(inputField) {
-
-			let rightPattern = true;
-
-			if(inputField[0] == "-" || inputField[inputField.length - 1] == "-")
-				rightPattern = false;
-
-			for(let)
-		}
-
-		function checkForValidFormat(inputField) {
-
-			/*
-				First Char possibilities
-				1 and 10 other digits
-				( 3 digits ) 
-				or any digit if there are only 10 digits
-			*/
-
-			if(inputField[0] == 1) {
-				inputField = input
+				let lastFourChars = inputValue.splice(inputValue.length - 4, 4);
+				return checkIfAllNumbers(lastFourChars);
 			}
+
+			function checkMiddleThreeDigitsPattern() {
+
+				if(inputValue[inputValue.length - 1] == " " || inputValue[inputValue.length - 1] == "-") 
+					inputValue.splice(inputValue.length - 1, 1);
+				
+				let middleThreeDigits = inputValue.splice(inputValue.length - 3, 3);
+				return checkIfAllNumbers(middleThreeDigits);
+			}
+
+			function checkFirstThreeDigitsPattern() {
+
+				(function checkParenthesesPattern() {
+					if(inputValue[0] == "(" && inputValue[4] == ")") {
+						inputValue.splice(4, 1);
+						inputValue.splice(0, 1);
+					}
+				})();
+
+				(function checkForUSPrefixPattern() {
+					if(inputValue[0] == "1" && inputValue[1] == " ")
+						inputValue.splice(0,2);
+				})();
+
+				if(inputValue[inputValue.length - 1] == " " || inputValue[inputValue.length - 1] == "-") 
+					inputValue.splice(inputValue.length - 1, 1);
+
+				if(inputValue.length != 3)
+					return false;
+
+				let firstThreeDigits = inputValue;
+				return checkIfAllNumbers(firstThreeDigits);
+			}
+
+
+			if(checkLastFourDigitsPatter() == false)
+				return false;
+
+			if(checkMiddleThreeDigitsPattern() == false)
+				return false;
+
+			if(checkFirstThreeDigitsPattern() == false)
+				return false;
+
+			return true;
 		}
+
 	</script>
 </body>
 </html>
