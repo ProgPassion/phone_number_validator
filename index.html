@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<input type="text" id="field1">
+	<button id="submit">check</button>
+
+	<script type="text/javascript">
+		
+		let inputField = document.getElementById("field1"); 
+		let submitBtn  = document.getElementById("submit");
+		let validChars = ["0","1","2","3","4","5","6","7","8","9"," ","-","(",")"];
+
+		submitBtn.addEventListener("click", function() {
+			console.log(checkForInvalidChars(inputField.value, validChars));			
+		});
+
+		function checkForInvalidChars(inputField, validChars) {
+			let validInput = true;
+
+			inputField.split("").forEach(function(character) {
+				if(!validChars.includes(character))
+					validInput = false;
+			});
+
+			return validInput;
+		}
+
+		function checkForRightSpacePattern(inputField) {
+
+			let rightPattern = true;
+
+			if(inputField[0] == " " || inputField[inputField.length - 1] == " ") //the input starts with space or ends with space
+				rightPattern = false;
+
+			for(let i = 0; i < inputField.length - 1; i++) {
+				if(inputField[i] == " " && inputField[i+1] == " ") //two space chars are found one after another
+					rightPattern = false;
+			}
+
+			return rightPattern;
+		}
+
+		function checkForRightParenthesesPattern(inputField) {
+
+			let rightPattern = true;
+
+			if(inputField[0] == "(") {
+
+				let closingParenthesesFound = false; //declare a variable false for the closing parentheses and make it true when is found one
+
+				for(let i = 1; i < inputField.length; i++) {
+					if(inputField[i] == "(") // if there is found other opening parentheses then turn the rightPattern variable to false
+						rightPattern = false;
+
+					if(inputField[i] == ")") { 
+						closingParenthesesFound = true; // when found the closing parentheses turn the closingParenthesesFound to true
+						if(i != 4) // if the index of the closing parentheses is not 4 then the rightPattern variable should be turned to false
+							rightPattern = false;	
+					}
+						 
+				}
+
+				if(closingParenthesesFound && rightPattern) // check if in the pattern is found a closing parentheses and if rightPattern variable is true
+					return rightPattern;
+			}
+
+			return rightPattern;
+		}
+
+
+		function checkForRightDashPattern(inputField) {
+
+			let rightPattern = true;
+
+			if(inputField[0] == "-" || inputField[inputField.length - 1] == "-")
+				rightPattern = false;
+
+			for(let)
+		}
+
+		function checkForValidFormat(inputField) {
+
+			/*
+				First Char possibilities
+				1 and 10 other digits
+				( 3 digits ) 
+				or any digit if there are only 10 digits
+			*/
+
+			if(inputField[0] == 1) {
+				inputField = input
+			}
+		}
+	</script>
+</body>
+</html>
